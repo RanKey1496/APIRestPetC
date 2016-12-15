@@ -16,6 +16,10 @@
   "bugs": {
     "url": "https://github.com/RanKey1496/PetCoccolatiAPI/issues"
   },
+  "engines":{
+    "node": "*",
+    "npm": "*"
+  },
   "homepage": "https://github.com/RanKey1496/PetCoccolatiAPI#readme",
   "dependencies": {
     "bcrypt-nodejs": "0.0.3",
