@@ -3,6 +3,8 @@ var User = require('../models/user');
 var config = require('../config');
 var bcrypt = require('bcrypt-nodejs');
 
+var util = require('../transexual/util');
+
 function signup(req, res){
 	var user = new User({
 		email: req.body.email,
@@ -82,7 +84,7 @@ function signin(req, res){
 						name: user.name,
 						role: user.role
 					}, config.hash_secret, {
-						expiresIn: '2m'
+						expiresIn: '10m'
 					});
 
 					res.json({ success: true, 
@@ -161,12 +163,13 @@ function uploadPicture(req, res){
 		return res.json({success: true, 
 			message: 'Picture update'});
 	});
+
 };
 
 module.exports = {
 	tokenCheck,
 	signup,
 	signin,
-	getAuthenticatedUser,
-	uploadPicture
+	getAuthenticatedUser//,
+	//uploadPicture
 }

@@ -5,11 +5,11 @@ var config = require('./config');
 mongoose.connect(config.db, function(err, res){
 	if(err){
 		console.log(err);
-		process.exit(1);
 	} else {
   		console.log('Conection Established');
-	  	app.listen(config.port, function(){
-	    	console.log('Server at http://localhost:', config.port);
-	  	});
 	}
+  	app.listen(config.port, function(){
+    	console.log('Server at http://localhost:3000');
+    	console.log('Server at https://petcoccolati.herokuapp.com/');
+  	});
 });
