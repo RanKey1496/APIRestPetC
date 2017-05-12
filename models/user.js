@@ -60,5 +60,4 @@ UserSchema.pre('save', function(next){
 });
 
 UserSchema.plugin(beautifyUnique);
-
 module.exports = mongoose.model('User', UserSchema);
