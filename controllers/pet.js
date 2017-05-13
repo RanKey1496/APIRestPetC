@@ -43,6 +43,37 @@ function addPet(req, res){
     });
 }
 
+function getPetInfo(req, res){
+    if(!req.params.id){
+        return res.status(400).json({ 
+            success: false, 
+            message: { 
+                errors: 'BadRequestError', 
+                name: 'Missing params',
+                created: false
+            }
+        });
+    }
+
+    Pet.find({'_id':req.params.id}, function(err, pet){
+        if(err){
+            return res.status(500).json({ success: false, 
+                message: { 
+                    errors: 'Pet not found', 
+                    name: 'DataNotFound'
+                }
+            });
+        }
+
+        return res.status(200).json({ success: true, 
+			message: { 
+				message: 'Success', 
+				pet: pet
+			}
+		});
+    })
+}
+
 function getAvailablePets(req, res){
     Pet.find({'adoption_available': 'true'}, function(err, pets) {
         if (!err){ 
@@ -117,5 +148,6 @@ function getPetsByLocation(req, res){
 
 module.exports = {
     getAvailablePets,
-    addPet
+    addPet,
+    getPetInfo
 }
