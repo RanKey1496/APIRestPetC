@@ -2,11 +2,47 @@ var Pet = require('../models/pet');
 var GeoPoint = require('geopoint');
 
 function getPets(req, res){
+    Pet.find({}, function(err, pets){
+        if(err){
+            return res.status(500).json({ 
+                success: false, 
+                message: { 
+                    errors: 'Error getting data', 
+                    name: 'DataGetError',
+                    created: false
+                }
+            });  
+        }
 
+        return res.status(200).json({ success: true, 
+            message: { 
+                message: 'Success', 
+                pets: pets
+            }
+        });
+    })
 }
 
 function getPet(req, res){
-    
+    Pet.findById(req.params.id, function(err, pet){
+        if(err){
+            return res.status(500).json({ 
+                success: false, 
+                message: { 
+                    errors: 'Error getting data', 
+                    name: 'DataGetError',
+                    created: false
+                }
+            });  
+        }
+
+        return res.status(200).json({ success: true, 
+            message: { 
+                message: 'Success', 
+                pet: pet
+            }
+        });
+    })
 }
 
 function addPet(req, res){
@@ -51,11 +87,49 @@ function addPet(req, res){
 }
 
 function updatePet(req, res){
-    
+    Pet.findByIdAndUpdate(req.params.id, req.body, function(err, pet){
+        if(err){
+            return res.status(500).json({ 
+                success: false, 
+                message: { 
+                    errors: 'Error updating data', 
+                    name: 'DataUpdateError',
+                    updated: false
+                }
+            }); 
+        }
+
+        return res.status(200).json({ success: true, 
+            message: { 
+                message: 'Success', 
+                updated: true,
+                pet: pet 
+            }
+        });
+
+    })   
 }
 
 function deletePet(req, res){
-    
+    Pet.findByIdAndRemove(req.params.id, function(err, pet){
+        if(err){
+            return res.status(500).json({ 
+                success: false, 
+                message: { 
+                    errors: 'Error deleting data', 
+                    name: 'DataDeletionError',
+                    deleted: false
+                }
+            }); 
+        }
+
+        return res.status(200).json({ success: true, 
+            message: { 
+                message: 'Success', 
+                deleted: true
+            }
+        });
+    });   
 }
 
 module.exports = {

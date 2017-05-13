@@ -73,7 +73,7 @@ function addPetShop(req, res){
 }
 
 function updatePetShop(req, res){	
-	PetShop.findOneAndUpdate({ _id: req.body.id }, req.body, function(err, petshop){
+	PetShop.findByIdAndUpdate(req.body.id, req.body, function(err, petshop){
 		if(err){
 			return res.status(400).json({ success: false, 
 				message: err
