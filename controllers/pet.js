@@ -1,5 +1,4 @@
 var Pet = require('../models/pet');
-var PetShop = require('../models/pet_shop');
 var GeoPoint = require('geopoint');
 
 function getPets(req, res){

@@ -11,7 +11,28 @@ var PetShopSchema = new Schema({
     },
     longitude: {
         type: Number, unique: false, required: true
-    }
+    },
+	city: {
+		type: String, unique: false, required: true
+	},
+	state: {
+		type: String, unique: false, required: true
+	},
+	country: {
+		type: String, unique: false, required: true
+	},
+	address: {
+		type: String, unique: false, required: true
+	},
+	open: {
+		type: String, unique: false, required: false
+	},
+	close: {
+		type: String, unique: false, required: false
+	},
+	contact: {
+		type: String, unique: false, required: true
+	}
 });
 
 PetShopSchema.plugin(beautifyUnique);

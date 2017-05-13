@@ -28,12 +28,12 @@ api.delete('/mascotas/:id', PetController.deletePet);
 
 //Información de veterianarias
 api.get('/veterinarias', PetShopController.getPetShops);
+api.get('/veterinarias/:id', PetShopController.getPetShop);
 api.post('/veterinarias', PetShopController.addPetShop);
 api.patch('/veterinarias', PetShopController.updatePetShop);
 api.delete('/veterinarias/:id', PetShopController.deletePetShop);
-api.patch('/veterinarias/:city', PetShopController.getPetShopByCity);
-api.post('/veterinarias/:geo', PetShopController.getPetShopByGeo);
-api.patch('/veterinarias/:id', PetShopController.getPetShop);
+api.get('/veterinarias/ciudad/:city', PetShopController.getPetShopByCity);
+api.get('/veterinarias/geo/:latitude/:longitude', PetShopController.getPetShopByGeo);
 
 //Vacunaciones
 api.get('/vacunaciones', VaccinationsController.getVaccinations);
@@ -43,7 +43,7 @@ api.delete('/vacunaciones/:id', VaccinationsController.deleteVaccination);
 
 //Adopciones
 api.get('/adopciones', AdoptionsController.getAvailablePets);
-api.get('/adopciones/:location/:latitude', AdoptionsController.getPetsByLocation);
+api.get('/adopciones/geo/:location/:latitude', AdoptionsController.getPetsByLocation);
 
 //api.post('/upload', util.saveFile, UserController.uploadPicture);
 
