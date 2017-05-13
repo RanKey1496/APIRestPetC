@@ -7,7 +7,7 @@ var AdoptionsController = require('../controllers/adoptions');
 var api = express.Router();
 var multer = require('multer');
 
-var util = require('../transexual/util');
+var util = require('../transversal/util');
 
 api.get('/', function(req, res){
 	return res.status(200).send({message: 'Entraste a la API'});
