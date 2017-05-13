@@ -1,5 +1,9 @@
 var Vaccination = require('../models/vaccinations');
 
+function getVaccinations(req, res){
+
+}
+
 function addVaccination(req, res){
     if(!req.body.type || !req.body.date || !req.body.pet_id){
         return res.status(400).json({ 
@@ -36,4 +40,19 @@ function addVaccination(req, res){
 			}
         });
     });
+}
+
+function updateVaccination(req, res){
+
+}
+
+function deleteVaccination(req, res){
+
+}
+
+module.exports = {
+	getVaccinations,
+    addVaccination,
+	updateVaccination,
+	deleteVaccination
 }

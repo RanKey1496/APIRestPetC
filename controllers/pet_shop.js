@@ -117,7 +117,7 @@ function getPetShopByCity(req, res){
 			});
 		} else {
 			return res.status(200).json({ success: true,
-				message: 'Success'
+				message: 'Success',
 				petshops: petshop
 			});
 		}
