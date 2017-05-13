@@ -1,4 +1,5 @@
 var PetShop = require('../models/pet_shop');
+var GeoPoint = require('geopoint');
 
 function getPetShops(req, res){
 	PetShop.find({}, function(err, petshop) {
@@ -125,7 +126,7 @@ function getPetShopByCity(req, res){
 }
 
 function getPetShopByGeo(req, res){
-	
+	// TODO
 }
 
 module.exports = {
