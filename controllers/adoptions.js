@@ -6,31 +6,31 @@ function getAvailablePets(req, res){
     Pet.find({'adoption_available': 'true'}, function(err, pets) {
         if (!err){ 
             return res.status(200).json({ success: true, 
-				message: { 
-					message: 'Success', 
-					pets: pets
-				}
-			});
+                message: { 
+                    message: 'Success', 
+                    pets: pets
+                }
+            });
         } 
         
         return res.status(500).json({ success: false, 
-			message: { 
-				errors: 'Internal Server Error', 
-				name: 'InternalServerError'
-    		}
-		});
+            message: { 
+                errors: 'Internal Server Error', 
+                name: 'InternalServerError'
+            }
+        });
     });
 }
 
 function getPetsByLocation(req, res){
     if(!req.body.latitude || !req.body.longitude){
         return res.status(400).json({success: false, 
-			message: { 
-				errors: 'Bad request', 
-				message: 'Expected params not found', 
-				name: 'ArgsNotFoundError'
-			}
-		});
+            message: { 
+                errors: 'Bad request', 
+                message: 'Expected params not found', 
+                name: 'ArgsNotFoundError'
+            }
+        });
     }   
     var filteredPets = [];
     Pet.find({'adoption_available': 'true'}, function(err, pets) {
@@ -65,11 +65,11 @@ function getPetsByLocation(req, res){
         } 
         
         return res.status(500).json({ success: false, 
-			message: { 
-				errors: 'Internal Server Error', 
-				name: 'InternalServerError'
-    		}
-		});
+            message: { 
+                errors: 'Internal Server Error', 
+                name: 'InternalServerError'
+            }
+        });
     });
     
 }

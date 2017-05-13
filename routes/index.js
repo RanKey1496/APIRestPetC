@@ -20,11 +20,11 @@ api.use(UserController.tokenCheck);
 api.get('/authenticated', UserController.getAuthenticatedUser);
 
 //Mascotas
-api.get('/mascotas/:id', PetController.getPetInfo);
-api.get('/mascotas', PetShopController.getPets);
-api.post('/mascotas', PetShopController.getPetInfo);
-api.patch('/mascotas', PetShopController.getPetInfo);
-api.delete('/mascotas/:id', PetShopController.getPetInfo);
+api.get('/mascotas/:id', PetController.getPet);
+api.get('/mascotas', PetController.getPets);
+api.post('/mascotas', PetController.addPet);
+api.patch('/mascotas', PetController.updatePet);
+api.delete('/mascotas/:id', PetController.deletePet);
 
 //Información de veterianarias
 api.get('/veterinarias', PetShopController.getPetShops);
