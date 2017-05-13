@@ -5,7 +5,7 @@ var GeoPoint = require('geopoint');
 function getAvailablePets(req, res){
     Pet.find({'adoption_available': 'true'}, function(err, pets) {
         if (!err){ 
-            return res.status(200).json({ success: false, 
+            return res.status(200).json({ success: true, 
 				message: { 
 					message: 'Success', 
 					pets: pets
@@ -72,4 +72,8 @@ function getPetsByLocation(req, res){
 		});
     });
     
+}
+
+module.exports = {
+    getAvailablePets
 }
