@@ -3,17 +3,20 @@ var Schema = mongoose.Schema;
 var beautifyUnique = require('mongoose-beautiful-unique-validation');
 
 var VaccinationSchema = new Schema({
-    type: {
+  type: {
 		type: String, unique: false, lowercase: true, required: true
 	},
-    diagnostic: {
+  diagnostic: {
 		type: String, unique: false, lowercase: true, required: false
 	},
-    date: {
+  date: {
 		type: Date, unique: false, lowercase: true, required: true
 	},
-    pet: {
+  pet: {
 		type: Schema.Types.ObjectId, ref: 'pet', required: false
+	}, 
+	user: {
+		type: Schema.Types.ObjectId, ref: "user", required: true
 	}
 });
 
