@@ -22,10 +22,10 @@ var PetSchema = new Schema({
         type: Date, unique: false, lowercase: true, required: false
     }, 
     owner: { 
-        type: Schema.Types.ObjectId, ref: 'user' 
+        type: Schema.Types.ObjectId, ref: 'user', required: false
     },
     veterinary: {
-        type: Schema.Types.ObjectId, ref: 'pet_shop'
+        type: Schema.Types.ObjectId, ref: 'pet_shop', required: false
     }
 });
 
