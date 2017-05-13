@@ -126,7 +126,22 @@ function getPetShopByCity(req, res){
 }
 
 function getPetShopByGeo(req, res){
-	// TODO
+	var location = new GeoPoint(req.params.latitude, req.params.longitude);
+	var filteredPetShops = [];
+	PetShop.find({}, function(err, petshops){
+		for (var i = 0; i < petshops.length; i++) {
+			var petShop = petshops[i];
+			var petShopLocation = new GeoPoint(petShop.latitude, petShop.longitude);
+			if(location.distanceTo(petShopLocation, true) <= 20){
+				filteredPetShops.push(petShop);
+			}
+		}
+	});
+
+	return res.status(200).json({ success: true,
+			message: 'Success',
+			petshops: filteredPetShops
+		});
 }
 
 module.exports = {
