@@ -82,7 +82,7 @@ function signin(req, res){
 						name: user.name,
 						role: user.role
 					}, config.hash_secret, {
-						expiresIn: '2m'
+						expiresIn: '10m'
 					});
 
 					res.json({ success: true, 
