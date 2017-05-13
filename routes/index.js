@@ -2,6 +2,8 @@ var express = require('express');
 var UserController= require('../controllers/user');
 var PetController = require('../controllers/pet');
 var PetShopController = require('../controllers/pet_shop');
+var VaccinationsController = require('../controllers/vaccinations');
+var AdoptionsController = require('../controllers/adoptions');
 var api = express.Router();
 var multer = require('multer');
 
@@ -17,10 +19,14 @@ api.post('/signin', UserController.signin);
 api.use(UserController.tokenCheck);
 api.get('/authenticated', UserController.getAuthenticatedUser);
 
+//Mascotas
+api.get('/mascotas/:id', PetController.getPetInfo);
+api.get('/mascotas', PetShopController.getPets);
+api.post('/mascotas', PetShopController.getPetInfo);
+api.patch('/mascotas', PetShopController.getPetInfo);
+api.delete('/mascotas/:id', PetShopController.getPetInfo);
 
-api.get('/adoption/pets', PetController.getAvailablePets);
-
-//Veterinarias
+//Información de veterianarias
 api.get('/veterinarias', PetShopController.getPetShops);
 api.post('/veterinarias', PetShopController.addPetShop);
 api.patch('/veterinarias', PetShopController.updatePetShop);
@@ -28,6 +34,16 @@ api.delete('/veterinarias/:id', PetShopController.deletePetShop);
 api.patch('/veterinarias/:city', PetShopController.getPetShopByCity);
 api.post('/veterinarias/:geo', PetShopController.getPetShopByGeo);
 api.patch('/veterinarias/:id', PetShopController.getPetShop);
+
+//Vacunaciones
+api.get('/vacunaciones', VaccinationsController.getVaccinations);
+api.post('/vacunaciones', VaccinationsController.addVaccination);
+api.patch('/vacunaciones', VaccinationsController.updateVaccination);
+api.delete('/vacunaciones/:id', VaccinationsController.deleteVaccination);
+
+//Adopciones
+api.get('/adopciones', AdoptionsController.getAvailablePets);
+api.get('/adopciones/:location/:latitude', AdoptionsController.getPetsByLocation);
 
 //api.post('/upload', util.saveFile, UserController.uploadPicture);
 
