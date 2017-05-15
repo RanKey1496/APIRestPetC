@@ -1,5 +1,9 @@
 var Pet = require('../models/pet');
+var User = require('../models/user');
 var GeoPoint = require('geopoint');
+
+//TODO: Hacer excepciones generales como el error 500 y el 200
+//Creo que solo creando un objeto en el transversal sería suficiente
 
 function getPets(req, res){
     Pet.find({}, function(err, pets){
@@ -46,18 +50,10 @@ function getPet(req, res){
 }
 
 function addPet(req, res){
-    if(!req.body.name || !req.body.race 
-            || !req.body.species || !req.body.adoption_available
-            || !req.body.birth){
-                
-        return res.status(400).json({ 
-            success: false, 
-            message: { 
-                errors: 'Bad Request Error, data missing', 
-                name: 'BadRequestError'
-            }
-        });        
-    }
+	//TODO:
+	//Arreglar que se pueda meter el owner, hay que hacer una consulta y no se le puede pasar solo el Id, 
+	//si no un objeto
+	
     var pet = new Pet({
         name: req.body.name,
         race: req.body.race,
@@ -67,6 +63,7 @@ function addPet(req, res){
     })
     pet.save(function(err, data){
         if(err){
+			console.log(err);
             return res.status(500).json({ 
                 success: false, 
                 message: { 
@@ -87,7 +84,7 @@ function addPet(req, res){
 }
 
 function updatePet(req, res){
-    Pet.findByIdAndUpdate(req.params.id, req.body, function(err, pet){
+    Pet.findByIdAndUpdate(req.body.id, req.body, function(err, pet){
         if(err){
             return res.status(500).json({ 
                 success: false, 

@@ -1,13 +1,16 @@
 var express = require('express');
+
 var UserController= require('../controllers/user');
 var PetController = require('../controllers/pet');
 var PetShopController = require('../controllers/pet_shop');
 var VaccinationsController = require('../controllers/vaccinations');
 var AdoptionsController = require('../controllers/adoptions');
+
 var api = express.Router();
 var multer = require('multer');
 
-var util = require('../transversal/util');
+var MascotasValidator = require('../validations/mascotas');
+//var util = require('../transversal/util');
 
 api.get('/', function(req, res){
 	return res.status(200).send({message: 'Entraste a la API'});
@@ -20,11 +23,11 @@ api.use(UserController.tokenCheck);
 api.get('/authenticated', UserController.getAuthenticatedUser);
 
 //Mascotas
-api.get('/mascotas/:id', PetController.getPet);
+api.get('/mascotas/:id', MascotasValidator.validarId, PetController.getPet);
 api.get('/mascotas', PetController.getPets);
-api.post('/mascotas', PetController.addPet);
-api.patch('/mascotas', PetController.updatePet);
-api.delete('/mascotas/:id', PetController.deletePet);
+api.post('/mascotas', MascotasValidator.validarPetData, PetController.addPet);
+api.patch('/mascotas', MascotasValidator.validarUpdate, PetController.updatePet);
+api.delete('/mascotas/:id', MascotasValidator.validarId, PetController.deletePet);
 
 //Información de veterianarias
 api.get('/veterinarias', PetShopController.getPetShops);

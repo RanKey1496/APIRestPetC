@@ -4,7 +4,7 @@ var beautifyUnique = require('mongoose-beautiful-unique-validation');
 
 var PetSchema = new Schema({
     name: {
-		type: String, unique: true, lowercase: true, required: true
+		type: String, unique: false, lowercase: true, required: true
 	}, 
     race: {
 		type: String, unique: false, lowercase: true, required: true
@@ -22,10 +22,10 @@ var PetSchema = new Schema({
         type: Date, unique: false, lowercase: true, required: false
     }, 
     owner: { 
-        type: Schema.Types.ObjectId, ref: 'user', required: false
+        type: Schema.ObjectId, ref: 'User', required: false
     },
     veterinary: {
-        type: Schema.Types.ObjectId, ref: 'pet_shop', required: false
+        type: Schema.ObjectId, ref: 'PetShop', required: false
     }
 });
 

@@ -13,10 +13,10 @@ var VaccinationSchema = new Schema({
 		type: Date, unique: false, lowercase: true, required: true
 	},
   pet: {
-		type: Schema.Types.ObjectId, ref: 'pet', required: false
+		type: Schema.Types.ObjectId, ref: 'Pet', required: false
 	}, 
 	user: {
-		type: Schema.Types.ObjectId, ref: "user", required: true
+		type: Schema.Types.ObjectId, ref: "User", required: true
 	}
 });
 
