@@ -2,25 +2,21 @@ var Pet = require('../models/pet');
 var User = require('../models/user');
 var GeoPoint = require('geopoint');
 
-//TODO: Hacer excepciones generales como el error 500 y el 200
-//Creo que solo creando un objeto en el transversal sería suficiente
-
 function getPets(req, res){
     Pet.find({}, function(err, pets){
         if(err){
             return res.status(500).json({ 
                 success: false, 
-                message: { 
-                    errors: 'Error getting data', 
-                    name: 'DataGetError',
-                    created: false
+                errors: { 
+                    error: 'DataGetError', 
+                    msg: 'Error getting data'
                 }
             });  
         }
 
-        return res.status(200).json({ success: true, 
+        return res.status(200).json({ 
+			success: true, 
             message: { 
-                message: 'Success', 
                 pets: pets
             }
         });
@@ -32,43 +28,31 @@ function getPet(req, res){
         if(err){
             return res.status(500).json({ 
                 success: false, 
-                message: { 
-                    errors: 'Error getting data', 
-                    name: 'DataGetError',
-                    created: false
+                errors: { 
+                    error: 'DataGetError', 
+                    msg: 'Error getting data'
                 }
             });  
         }
 
-        return res.status(200).json({ success: true, 
+        return res.status(200).json({ 
+			success: true, 
             message: { 
-                message: 'Success', 
                 pet: pet
             }
         });
     })
 }
 
-function addPet(req, res){
-	//TODO:
-	//Arreglar que se pueda meter el owner, hay que hacer una consulta y no se le puede pasar solo el Id, 
-	//si no un objeto
-	
-    var pet = new Pet({
-        name: req.body.name,
-        race: req.body.race,
-        species: req.body.species,
-        adoption_available: req.body.adoption_available,
-        birth: req.body.birth
-    })
+function addPet(req, res){	
+    var pet = new Pet(req.body);
     pet.save(function(err, data){
         if(err){
-			console.log(err);
             return res.status(500).json({ 
                 success: false, 
-                message: { 
-                    errors: 'Error inserting data', 
-                    name: 'DataInsertError',
+                errors: { 
+                    error: 'DataInsertError', 
+                    msg: 'Error inserting data',
                     created: false
                 }
             });    
@@ -76,31 +60,31 @@ function addPet(req, res){
 
         return res.status(200).json({ success: true, 
             message: { 
-                message: 'Success', 
-                created: true 
+				pet: data.name,
+                created: true
             }
         });
     });
 }
 
 function updatePet(req, res){
-    Pet.findByIdAndUpdate(req.body.id, req.body, function(err, pet){
+    Pet.findByIdAndUpdate(req.body.id, req.body, {new: true}, function(err, pet){
         if(err){
             return res.status(500).json({ 
                 success: false, 
-                message: { 
-                    errors: 'Error updating data', 
-                    name: 'DataUpdateError',
+                errors: { 
+                    error: 'DataUpdateError', 
+                    msg: 'Error updating data',
                     updated: false
                 }
             }); 
         }
 
-        return res.status(200).json({ success: true, 
-            message: { 
-                message: 'Success', 
-                updated: true,
-                pet: pet 
+        return res.status(200).json({ 
+			success: true, 
+            message: {
+				pet: pet,
+                updated: true     
             }
         });
 
@@ -112,17 +96,17 @@ function deletePet(req, res){
         if(err){
             return res.status(500).json({ 
                 success: false, 
-                message: { 
-                    errors: 'Error deleting data', 
-                    name: 'DataDeletionError',
+                errors: { 
+                    error: 'DataDeleteError', 
+                    msg: 'Error deleting data',
                     deleted: false
                 }
             }); 
         }
 
-        return res.status(200).json({ success: true, 
+        return res.status(200).json({ 
+			success: true, 
             message: { 
-                message: 'Success', 
                 deleted: true
             }
         });

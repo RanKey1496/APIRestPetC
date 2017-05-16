@@ -3,8 +3,8 @@
     "",
     "\\controllers",
     "\\models",
-    "\\routes"
+    "\\validations"
   ],
-  "SelectedNode": "\\models\\pet.js",
+  "SelectedNode": "\\controllers\\pet.js",
   "PreviewInSolutionExplorer": false
 }

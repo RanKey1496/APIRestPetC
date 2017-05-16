@@ -4,89 +4,83 @@ var config = require('../config');
 var bcrypt = require('bcrypt-nodejs');
 
 function signup(req, res){
-	var user = new User({
-		email: req.body.email,
-		password: req.body.password,
-		name: {
-			first: req.body.first,
-			last: req.body.last
-		},
-		addresses: {
-			street: req.body.street,
-			city: req.body.city,
-			country: req.body.country
-		},
-		phone: {
-			type: req.body.type,
-			number: req.body.number
-		}
-	});
+	var user = new User(req.body);
 
 	user.save(function(err, data){
 		if(err){
-			return res.status(400).json({success: false, 
-				message: err
-			});
+			return res.status(500).json({ 
+                success: false, 
+                errors: { 
+                    error: 'DataInsertError', 
+                    msg: 'Error inserting data',
+                    created: false
+                }
+            });
 		}
 
-		res.json({success: true, 
-			message: 'Registration successful'
-		});
+		return res.status(200).json({ success: true, 
+            message: { 
+				user: data.email,
+                created: true
+            }
+        });
 	});
 };
 
 function signin(req, res){
-	if(!req.body.email || !req.body.password){
-		return res.status(400).json({success: false, 
-			message: { 
-				errors: 'Invalid email or password', 
-				message: 'User validation failed', 
-				name: 'ValidationError'
-			}
-		});
-	}
-	User.findOne({ email: req.body.email.toLowerCase() }, 'password role name email', function(err, user){
+	User.findOne({ email: req.body.email.toLowerCase() }, 'password role firstname lastname email', function(err, user){
 		if(err){
-			return res.status(400).json({ success: false, 
-				message: err
-			});
+			return res.status(500).json({ 
+                success: false, 
+                errors: { 
+                    error: 'SearchError', 
+                    msg: 'Error searching data'
+                }
+            });
 		}
 
 		if(!user){
-			return res.status(400).json({ success: false, 
-				message: { 
-					errors: 'User not found', 
-					message: 'User validation failed', 
-					name: 'ValidationError'
-				}
-			});
+			return res.status(500).json({ 
+                success: false, 
+                errors: { 
+                    error: 'UserNotFound', 
+                    msg: 'User doesnt exist'
+                }
+            });
 		} else if (user){
 			bcrypt.compare(req.body.password, user.password, function(errB, resB){
 				if(errB){
-					return res.status(500).json({ success: false, 
-						message: errB 
+					return res.status(500).json({ 
+						success: false, 
+						errors: { 
+							error: 'PasswordError', 
+							msg: errB
+						}
 					});
 				}
 
 				if(!resB){
-					return res.status(400).json({ success: false, 
-						message:{ 
-							errors: 'E-mail and password do not match', 
-							message: 'User validation failed', 
-							name: 'ValidationError'
+					return res.status(500).json({ 
+						success: false, 
+						errors: { 
+							error: 'ValidationError', 
+							msg: 'Invalid email or password'
 						}
 					});
 				} else {
 					var token = jwt.sign({
 						email: user.email,
-						name: user.name,
+						firstname: user.firstname,
+						lastname: user.lastname,
 						role: user.role
 					}, config.hash_secret, {
 						expiresIn: '10m'
 					});
-
-					res.json({ success: true, 
-						message: token
+					return res.status(200).json({ 
+						success: true, 
+						message: { 
+							token: token
+						}
 					});
 				}
 			});
@@ -95,37 +89,15 @@ function signin(req, res){
 };
 
 function tokenCheck(req, res, next){
-	if(req.headers && req.headers.authorization){
-		var parts = req.headers.authorization.split(' ');
-		if(parts.length == 2){
-			token = parts[1];
-		} else {
-			return res.status(401).json({ success: false, 
-				message: {
-					errors: 'Invalid token format',
-					message: 'Token validation failed',
-					name: 'ValidationError'
+	jwt.verify(req.query.token, config.hash_secret, function(err, decoded) {      
+      	if (err) {
+			return res.status(500).json({ 
+				success: false, 
+				errors: { 
+					error: err.name, 
+					msg: err.message
 				}
 			});
-		}
-	} else if(req.body && req.query && req.params){
-		if(req.body.token) token = req.body.token;
-		if(req.query.token) token = req.query.token;
-		if(req.params.token) token = req.params.token;
-	} else {
-		return res.status(401).json({ success: false, 
-			message: {
-				errors: 'Token header invalid',
-				message: 'Token validation failed',
-				name: 'ValidationError'
-			}
-		});
-	}
-
-	jwt.verify(token, config.hash_secret, function(err, decoded) {      
-      	if (err) {
-        	return res.status(400).json({ success: false, 
-        		message: err });
       	} else {
         	req.decoded = decoded;    
         	next();
@@ -134,8 +106,10 @@ function tokenCheck(req, res, next){
 };
 
 function getAuthenticatedUser(req, res){
-	return res.json({success: true, 
-		message: req.decoded
+	return res.json({success: true,
+		message: {
+			authenticated: req.decoded
+		}
 	});
 };
 

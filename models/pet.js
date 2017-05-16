@@ -13,7 +13,7 @@ var PetSchema = new Schema({
         type: String, unique: false, lowercase: true, required: true
     }, 
     adoption_available: {
-        type: Boolean, unique: false, required: true
+        type: Boolean, unique: false, required: false, default: false
     },
     birth: {
         type: Date, unique: false, lowercase: true, required: true

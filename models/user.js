@@ -12,26 +12,28 @@ var UserSchema = Schema({
 	password: {
 		type: String, select: false, required: true
 	},
-	name: {
-		first: { type: String, required: true, trim: true},
-		last: { type: String, required: true, trim: true}
+	firstname: {
+		type: String, required: true, trim: true
 	},
-	addresses: [{
-		street: String,
-		city: String,
-		country: String
-	}],
-	phone: [{
-		type: {type: String},
-		number: String
-	}],
+	lastname: {
+		type: String, required: true, trim: true
+	},
+	city: {
+		type: String, unique: false, required: true
+	},
+	state: {
+		type: String, unique: false, required: true
+	},
+	country: {
+		type: String, unique: false, required: true
+	},
+	address: {
+		type: String, unique: false, required: true
+	},
+	phone: {
+		type: String, required: false
+	},
 	picture: String,
-	pets: [{
-		name: String,
-		type: {type: String},
-		gender: String, enum: ['male', 'female'],
-		picture: String
-	}],
 	signupDate: {
 		type: Date, default: Date.now()
 	},

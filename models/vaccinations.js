@@ -15,7 +15,7 @@ var VaccinationSchema = new Schema({
   pet: {
 		type: Schema.Types.ObjectId, ref: 'Pet', required: false
 	}, 
-	user: {
+  owner: {
 		type: Schema.Types.ObjectId, ref: "User", required: true
 	}
 });

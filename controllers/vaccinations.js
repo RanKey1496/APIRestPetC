@@ -1,67 +1,38 @@
 var Vaccination = require('../models/vaccinations');
 
-function getVaccinations(req, res){
-    if(!req.params.user_id){
-        return res.status(400).json({ 
-            success: false, 
-			message: { 
-				errors: 'Bad Request Error, data missing', 
-				name: 'BadRequestError'
-    		}
-		}); 
-    }    
-    
+function getVaccinations(req, res){    
     Vaccination.find({user: req.params.user_id}, function(err, vaccination){
         if(err){
-            return res.status(500).json({ 
+			return res.status(500).json({ 
                 success: false, 
-                message: { 
-                    errors: 'Error inserting data', 
-                    name: 'DataInsertError',
-                    created: false
+                errors: { 
+                    error: 'DataGetError', 
+                    msg: 'Error getting data'
                 }
-            }); 
+            });
         }
 
-        return res.status(200).json({ 
-            success: true, 
+		return res.status(200).json({ 
+			success: true, 
             message: { 
-                message: 'Success',
-                data: vaccination
+                vaccination: vaccination
             }
-        }); 
+        });
     });
 }
 
-function addVaccination(req, res){
-    if(!req.body.type || !req.body.date 
-                || !req.body.pet_id, !req.body.user_id){
-        return res.status(400).json({ 
-            success: false, 
-			message: { 
-				errors: 'Bad Request Error, data missing', 
-				name: 'BadRequestError'
-    		}
-		}); 
-    }
-    
-    var vaccination = new Vaccination({
-        pet: req.body.pet_id,
-        type: req.body.type,
-        date: req.body.date,
-        diagnostic: req.body.diagnostic,
-        user: req.body.user_id    
-    });
+function addVaccination(req, res){    
+    var vaccination = new Vaccination(req.body);
     vaccination.save(function(err, data){
         if(err){
-            return res.status(500).json({ 
+			return res.status(500).json({ 
                 success: false, 
-                message: { 
-                    errors: 'Error inserting data', 
-                    name: 'DataInsertError',
+                errors: { 
+                    error: 'DataInsertError', 
+                    msg: 'Error inserting data',
                     created: false
                 }
-            });    
+            });
         }
 
         return res.status(200).json({ success: true, 
@@ -70,35 +41,56 @@ function addVaccination(req, res){
 				created: true 
 			}
         });
+		return res.status(200).json({ success: true, 
+            message: {
+                created: true
+            }
+        });
     });
 }
 
 function updateVaccination(req, res){
-    Vaccination.findOneAndUpdate({_id:req.body.id}, req.body, function(err, vaccination){
+    Vaccination.findByIdAndUpdate(req.body.id, req.body, {new: true}, function(err, vaccination){
         if(err){
-            return res.status(400).json({ success: false, 
-				message: err
-			});
+            return res.status(500).json({ 
+                success: false, 
+                errors: { 
+                    error: 'DataUpdateError', 
+                    msg: 'Error updating data',
+                    updated: false
+                }
+            }); 
         }
 
-        return res.status(200).json({ success: true,
-			message: 'Update successful',
-            vaccination: vaccination
-		});
+		return res.status(200).json({ 
+			success: true, 
+            message: {
+				vaccination: vaccination,
+                updated: true     
+            }
+        });
     });
 }
 
 function deleteVaccination(req, res){
-    Vaccination.findByIdAndRemove(req.body.id, function(err, res){
+    Vaccination.findByIdAndRemove(req.params.id, function(err, res){
         if(err){
-			return res.status(400).json({ success: false, 
-				message: err
-			});
+			return res.status(500).json({ 
+                success: false, 
+                errors: { 
+                    error: 'DataDeleteError', 
+                    msg: 'Error deleting data',
+                    deleted: false
+                }
+            });
 		} 
 
-        return res.status(200).json({ success: true,
-			message: 'Delete successful'
-		});	
+		return res.status(200).json({ 
+			success: true, 
+            message: { 
+                deleted: true
+            }
+        });
     });
 }
 
